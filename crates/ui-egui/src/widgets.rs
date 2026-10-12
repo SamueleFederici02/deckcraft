@@ -33,7 +33,20 @@ pub fn big_button(ui: &mut Ui, icon: Icon, label: &str, enabled: bool) -> Respon
 
 /// Large button; with `split`, the label row is a separate dropdown target (returns its response).
 pub fn big_button_ex(ui: &mut Ui, icon: Icon, label: &str, enabled: bool, split: bool, selected: bool) -> (Response, Option<Response>) {
-    let tr_label = crate::i18n::t(label);
+    let normalized = if label.contains('\n') { Some(label.replace('\n', " ")) } else { None };
+    let tr_label = if label.is_empty() {
+        ""
+    } else {
+        let direct = crate::i18n::t(label);
+        if direct != label {
+            direct
+        } else if let Some(ref norm) = normalized {
+            let clean = crate::i18n::t(norm);
+            if clean != norm.as_str() { clean } else { direct }
+        } else {
+            direct
+        }
+    };
     let t = Tokens::get(ui.ctx());
     let font = theme::font(11.0);
     let lines: Vec<&str> = wrap_label(tr_label);
