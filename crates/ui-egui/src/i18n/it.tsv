@@ -1,0 +1,104 @@
+# DeckCraft Italian Interface Translation Catalog
+# Format: context<TAB>source<TAB>translation
+# (Empty context for general strings)
+
+	Home	Home
+	Insert	Inserisci
+	Draw	Disegno
+	Design	Progettazione
+	Transitions	Transizioni
+	Animations	Animazioni
+	Slide Show	Presentazione
+	Record	Registra
+	Review	Revisione
+	View	Visualizza
+	Slide Master	Schema diapositiva
+	Shape Format	Formato forma
+	Picture Format	Formato immagine
+	Table Design	Struttura tabella
+	Layout	Layout
+	Chart Design	Struttura grafico
+	Playback	Riproduzione
+
+	File	File
+	Save	Salva
+	Save As…	Salva con nome…
+	Open…	Apri…
+	Close	Chiudi
+	Export…	Esporta…
+	Preferences	Preferenze
+	Preferences…	Preferenze…
+	About DeckCraft	Informazioni su DeckCraft
+	Quit	Esci
+	Done	Fine
+	Cancel	Annulla
+	OK	OK
+	Apply	Applica
+	Delete	Elimina
+	Rename	Rinomina
+
+	Undo	Annulla
+	Redo	Ripeti
+	Cut	Taglia
+	Copy	Copia
+	Paste	Incolla
+	Select All	Seleziona tutto
+	Duplicate	Duplica
+
+	New Slide	Nuova diapositiva
+	Delete Slide	Elimina diapositiva
+	Duplicate Slide	Duplica diapositiva
+	Hide Slide	Nascondi diapositiva
+	Slide Size	Dimensioni diapositiva
+	Format Background…	Formato sfondo…
+
+	Normal	Normale
+	Outline View	Visualizzazione struttura
+	Slide Sorter	Sequenza diapositive
+	Notes Page	Pagina note
+	Reading View	Visualizzazione lettura
+	Notes	Note
+	Ruler	Righello
+	Gridlines	Griglia
+	Guides	Guide
+	Fit to Window	Adatta alla finestra
+	Zoom	Zoom
+	Zoom In	Zoom avanti
+	Zoom Out	Zoom indietro
+	Dark Mode	Modalità scura
+	Grayscale	Gradazioni di grigio
+	Presenter View	Visualizzazione relatore
+	End Show	Fine presentazione
+
+	Text Box	Casella di testo
+	Shapes	Forme
+	Pictures	Immagini
+	Picture from File…	Immagine da file…
+	Table	Tabella
+	Audio	Audio
+	Audio from File…	Audio da file…
+	Video	Video
+	Video from File…	Video da file…
+	Chart	Grafico
+	SmartArt	SmartArt
+	Hyperlink	Collegamento
+	Insert Hyperlink	Inserisci collegamento
+	Symbol	Simbolo
+	Equation	Equazione
+	Comment	Commento
+	New Comment	Nuovo commento
+
+	Task Pane	Riquadro attività
+	Comments	Commenti
+	Selection Pane	Riquadro di selezione
+	Animation Pane	Riquadro animazione
+
+	General	Generale
+	Editing	Modifica
+	Dark appearance	Aspetto scuro
+	Interface size	Dimensioni interfaccia
+	Show smart guides	Mostra guide intelligenti
+	Snap objects to grid	Blocca oggetti sulla griglia
+	Replace straight quotes with smart quotes	Sostituisci virgolette dritte con virgolette curve
+	AutoCorrect as you type	Correzione automatica durante la digitazione
+	Your name (comments):	Nome utente (commenti):

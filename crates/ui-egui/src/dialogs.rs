@@ -716,6 +716,29 @@ fn body(app: &mut SlideApp, ui: &mut Ui, d: &mut Dialog) -> bool {
         }
         "preferences" => {
             ui.label(egui::RichText::new("General").font(theme::bold(13.0)));
+            ui.horizontal(|ui| {
+                ui.label("Language:");
+                let cur = crate::i18n::current();
+                let pref = if app.ui.language == crate::i18n::AUTO {
+                    format!("Follow system ({})", cur.name())
+                } else {
+                    cur.name().to_string()
+                };
+                egui::ComboBox::from_id_salt("pref_language")
+                    .selected_text(pref)
+                    .show_ui(ui, |ui| {
+                        let is_auto = app.ui.language == crate::i18n::AUTO;
+                        if ui.selectable_label(is_auto, format!("Follow system ({})", crate::i18n::system_lang().name())).clicked() {
+                            app.ui.language = crate::i18n::AUTO.into();
+                        }
+                        for l in crate::i18n::Lang::all() {
+                            let active = !is_auto && app.ui.language.eq_ignore_ascii_case(l.code());
+                            if ui.selectable_label(active, l.name()).clicked() {
+                                app.ui.language = l.code().into();
+                            }
+                        }
+                    });
+            });
             let mut dark = app.ui.brightness == theme::Brightness::Dark;
             if ui.checkbox(&mut dark, "Dark appearance").changed() {
                 let _ = app.run("view.dark", json!({"on": dark}));
