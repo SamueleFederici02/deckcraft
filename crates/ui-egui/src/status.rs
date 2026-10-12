@@ -26,7 +26,13 @@ pub fn status_bar(app: &mut SlideApp, ui: &mut Ui) {
         let p = ui.painter();
         p.text(pos2(rect.min.x + 14.0, rect.center().y), Align2::LEFT_CENTER, &left, theme::font(12.0), t.text_dim);
         let cur_lang_name = crate::i18n::current().name();
-        p.text(pos2(rect.min.x + 140.0, rect.center().y), Align2::LEFT_CENTER, cur_lang_name, theme::font(12.0), t.text_dim);
+        let lang_rect = Rect::from_center_size(pos2(rect.min.x + 165.0, rect.center().y), vec2(70.0, 20.0));
+        let lang_resp = ui.interact(lang_rect, ui.id().with("status_language"), Sense::click());
+        let lang_color = if lang_resp.hovered() { t.text } else { t.text_dim };
+        p.text(pos2(rect.min.x + 140.0, rect.center().y), Align2::LEFT_CENTER, cur_lang_name, theme::font(12.0), lang_color);
+        if lang_resp.clicked() {
+            app.dialog = Some(crate::dialogs::Dialog::new("preferences"));
+        }
         // Transient status message.
         if let Some((msg, at)) = app.status.clone() {
             if crate::now_ms() - at < 6000.0 {

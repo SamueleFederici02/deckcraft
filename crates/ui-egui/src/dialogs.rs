@@ -264,21 +264,29 @@ fn body(app: &mut SlideApp, ui: &mut Ui, d: &mut Dialog) -> bool {
                 ui.ctx().send_viewport_cmd(egui::ViewportCommand::Close);
                 return true;
             }
-            let what = if names.len() == 1 { format!("“{}”", names[0]) } else { format!("{} presentations", names.len()) };
-            ui.label(egui::RichText::new(format!("Do you want to save the changes you made to {what}?")).strong());
-            ui.label("Your changes will be lost if you don't save them.");
+            let what = if names.len() == 1 {
+                format!("“{}”", names[0])
+            } else {
+                crate::i18n::fmt(crate::i18n::t("{n} presentations"), &[("n", &names.len().to_string())])
+            };
+            let question = crate::i18n::fmt(
+                crate::i18n::t("Do you want to save the changes you made to {what}?"),
+                &[("what", &what)],
+            );
+            ui.label(egui::RichText::new(question).strong());
+            ui.label(crate::i18n::t("Your changes will be lost if you don't save them."));
             ui.add_space(8.0);
             let mut done = false;
             ui.horizontal(|ui| {
                 let t = Tokens::get(ui.ctx());
-                if ui.add(egui::Button::new("Don't Save").min_size(vec2(84.0, 24.0))).clicked() {
+                if ui.add(egui::Button::new(crate::i18n::t("Don't Save")).min_size(vec2(84.0, 24.0))).clicked() {
                     let _ = app.session.execute("file.recovery.discard", &json!({}));
                     app.quit_confirmed = true;
                     ui.ctx().send_viewport_cmd(egui::ViewportCommand::Close);
                     done = true;
                 }
                 ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
-                    let save = ui.add(egui::Button::new(egui::RichText::new("Save").color(t.accent_text)).fill(t.accent).min_size(vec2(72.0, 24.0)));
+                    let save = ui.add(egui::Button::new(egui::RichText::new(crate::i18n::t("Save")).color(t.accent_text)).fill(t.accent).min_size(vec2(72.0, 24.0)));
                     if save.clicked() || ui.input(|i| i.key_pressed(egui::Key::Enter)) {
                         if app.save_all() {
                             app.quit_confirmed = true;
@@ -286,7 +294,7 @@ fn body(app: &mut SlideApp, ui: &mut Ui, d: &mut Dialog) -> bool {
                         }
                         done = true;
                     }
-                    if ui.add(egui::Button::new("Cancel").min_size(vec2(72.0, 24.0))).clicked() {
+                    if ui.add(egui::Button::new(crate::i18n::t("Cancel")).min_size(vec2(72.0, 24.0))).clicked() {
                         done = true;
                     }
                 });
@@ -718,12 +726,12 @@ fn body(app: &mut SlideApp, ui: &mut Ui, d: &mut Dialog) -> bool {
             ok
         }
         "preferences" => {
-            ui.label(egui::RichText::new("General").font(theme::bold(13.0)));
+            ui.label(egui::RichText::new(crate::i18n::t("General")).font(theme::bold(13.0)));
             ui.horizontal(|ui| {
-                ui.label("Language:");
+                ui.label(crate::i18n::t("Language:"));
                 let cur = crate::i18n::current();
                 let pref = if app.ui.language == crate::i18n::AUTO {
-                    format!("Follow system ({})", cur.name())
+                    format!("{} ({})", crate::i18n::t("Follow system"), cur.name())
                 } else {
                     cur.name().to_string()
                 };
@@ -731,7 +739,7 @@ fn body(app: &mut SlideApp, ui: &mut Ui, d: &mut Dialog) -> bool {
                     .selected_text(pref)
                     .show_ui(ui, |ui| {
                         let is_auto = app.ui.language == crate::i18n::AUTO;
-                        if ui.selectable_label(is_auto, format!("Follow system ({})", crate::i18n::system_lang().name())).clicked() {
+                        if ui.selectable_label(is_auto, format!("{} ({})", crate::i18n::t("Follow system"), crate::i18n::system_lang().name())).clicked() {
                             app.ui.language = crate::i18n::AUTO.into();
                         }
                         for l in crate::i18n::Lang::all() {
@@ -743,20 +751,20 @@ fn body(app: &mut SlideApp, ui: &mut Ui, d: &mut Dialog) -> bool {
                     });
             });
             let mut dark = app.ui.brightness == theme::Brightness::Dark;
-            if ui.checkbox(&mut dark, "Dark appearance").changed() {
+            if ui.checkbox(&mut dark, crate::i18n::t("Dark appearance")).changed() {
                 let _ = app.run("view.dark", json!({"on": dark}));
             }
             let mut scale = app.ui.ui_scale;
-            if ui.add(egui::Slider::new(&mut scale, 0.75..=1.75).text("Interface size")).changed() {
+            if ui.add(egui::Slider::new(&mut scale, 0.75..=1.75).text(crate::i18n::t("Interface size"))).changed() {
                 app.ui.ui_scale = scale;
             }
-            ui.label(egui::RichText::new("Editing").font(theme::bold(13.0)));
-            ui.checkbox(&mut app.session.prefs.smart_guides, "Show smart guides");
-            ui.checkbox(&mut app.session.prefs.snap_to_grid, "Snap objects to grid");
-            ui.checkbox(&mut app.session.prefs.smart_quotes, "Replace straight quotes with smart quotes");
-            ui.checkbox(&mut app.session.prefs.autocorrect, "AutoCorrect as you type");
+            ui.label(egui::RichText::new(crate::i18n::t("Editing")).font(theme::bold(13.0)));
+            ui.checkbox(&mut app.session.prefs.smart_guides, crate::i18n::t("Show smart guides"));
+            ui.checkbox(&mut app.session.prefs.snap_to_grid, crate::i18n::t("Snap objects to grid"));
+            ui.checkbox(&mut app.session.prefs.smart_quotes, crate::i18n::t("Replace straight quotes with smart quotes"));
+            ui.checkbox(&mut app.session.prefs.autocorrect, crate::i18n::t("AutoCorrect as you type"));
             ui.horizontal(|ui| {
-                ui.label("Your name (comments):");
+                ui.label(crate::i18n::t("Your name (comments):"));
                 ui.text_edit_singleline(&mut app.session.prefs.author);
             });
             let (ok, _) = buttons(ui, "Done");
@@ -872,6 +880,32 @@ pub fn start_screen(app: &mut SlideApp, ui: &mut Ui) {
             let (r, _) = ui.allocate_exact_size(vec2(40.0, 40.0), Sense::hover());
             paint_logo(ui.painter(), r);
             ui.label(egui::RichText::new("DeckCraft").font(theme::bold(26.0)));
+            ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
+                ui.add_space(40.0);
+                if ui.button(crate::i18n::t("Preferences…")).clicked() {
+                    let _ = app.run("app.preferences", json!({}));
+                }
+                let cur = crate::i18n::current();
+                let is_auto = app.ui.language == crate::i18n::AUTO;
+                let display = if is_auto {
+                    format!("{} ({})", crate::i18n::t("Language"), cur.name())
+                } else {
+                    format!("{}: {}", crate::i18n::t("Language"), cur.name())
+                };
+                egui::ComboBox::from_id_salt("home_language")
+                    .selected_text(display)
+                    .show_ui(ui, |ui| {
+                        if ui.selectable_label(is_auto, format!("{} ({})", crate::i18n::t("Follow system"), crate::i18n::system_lang().name())).clicked() {
+                            app.ui.language = crate::i18n::AUTO.into();
+                        }
+                        for l in crate::i18n::Lang::all() {
+                            let active = !is_auto && app.ui.language.eq_ignore_ascii_case(l.code());
+                            if ui.selectable_label(active, l.name()).clicked() {
+                                app.ui.language = l.code().into();
+                            }
+                        }
+                    });
+            });
         });
         if app.home_open() {
             let title = app.session.active().map(|d| d.title()).unwrap_or_default();
